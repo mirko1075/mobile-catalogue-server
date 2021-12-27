@@ -1,0 +1,25 @@
+{
+  "name": "mobile-catalogue-server",
+  "version": "1.0.0",
+  "description": "Rest API - Postgres DB - Phone catalogue",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirko1075/mobile-catalogue-server.git"
+  },
+  "author": "Mirko Siddi dev.mirko.siddi@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mirko1075/mobile-catalogue-server/issues"
+  },
+  "homepage": "https://github.com/mirko1075/mobile-catalogue-server#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "pg": "^8.7.1"
+  }
+}
