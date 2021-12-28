@@ -4,7 +4,8 @@ const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const app = express()
-const port = 3000
+require("dotenv").config();
+const port = process.env.PORT 
 
 // MIDDLEWARE
 app.use(logger("dev"));
