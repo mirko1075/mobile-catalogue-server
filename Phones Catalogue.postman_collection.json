@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "3f932b88-574f-498c-ad4f-4b5744245208",
+		"name": "Phones Catalogue",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete Phone",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/phones/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"phones",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Phone",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_name\": \"Galaxy S10 Pro Modified\",\r\n    \"manufacturer\": \"Samsung\",\r\n    \"description\": \"Competitor of Iphone 12\",\r\n    \"color\": \"gold\",\r\n    \"price\": 1010,\r\n    \"image_file_name\": \"image.jpg\",\r\n    \"screen\": \"180X24\",\r\n    \"processor\": \"Procesor XMD\",\r\n    \"ram\": 450\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/phones/16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"phones",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Phone",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_name\": \"Galaxy S10\",\r\n    \"manufacturer\": \"Samsung\",\r\n    \"description\": \"Competitor of Iphone 12\",\r\n    \"color\": \"white\",\r\n    \"price\": 1010,\r\n    \"image_file_name\": \"image.jpg\",\r\n    \"screen\": \"180X24\",\r\n    \"processor\": \"Procesor XMD\",\r\n    \"ram\": 450\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/phones",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"phones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Phones",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/phones",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"phones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Phone by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/phones/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"phones",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
