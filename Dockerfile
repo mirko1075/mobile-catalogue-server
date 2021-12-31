@@ -30,6 +30,5 @@ RUN npm install -g npm-check-updates \
 # If you are building your code for production
 RUN npm ci --only=production
 # Bundle app source
-COPY . /app
 EXPOSE 3000
-CMD [ "babel-node", "app.js" ]
+CMD [ "babel-node", "index.js" ]
