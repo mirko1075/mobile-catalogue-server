@@ -33,18 +33,29 @@ const getPhones = (request, response) => {
   }
 
   const createPhone = async (request, response) => {
-    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram } = request.body
+    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
     console.log('request.body :>> ', request.body);
     console.log('phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram :>> ', phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram);
     if (phone_name) {
         try {
-          pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
-          [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram], (error, result) => {
-            if (error) {
-              throw error
-            }
-            response.status(201).send(`Phone added added with ID: ${result.rows[0].id}`);
-          })  
+          if (B64File){
+            pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,b64file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9 decode($10, \'base64\')) RETURNING id',
+            [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64], (error, result) => {
+              if (error) {
+                throw error
+              }
+              response.status(201).send(`Phone added added with ID: ${result.rows[0].id}`);
+            })  
+          }else{
+            pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
+            [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram], (error, result) => {
+              if (error) {
+                throw error
+              }
+              response.status(201).send(`Phone added added with ID: ${result.rows[0].id}`);
+            })  
+          }
+
         } catch (error) {
           response.send(error)
         }
