@@ -33,14 +33,18 @@ const getPhones = (request, response) => {
   }
 
   const createPhone = async (request, response) => {
-    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
+    let {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
     console.log('request.body :>> ', request.body);
     console.log('phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram :>> ', phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram);
+    console.log('B64File :>> ', B64File);
+    if (!ram) ram=0;
+    if (!price) price=0;
     if (phone_name) {
         try {
           if (B64File){
-            pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,b64file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9 decode($10, \'base64\')) RETURNING id',
-            [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64], (error, result) => {
+            console.log("base64 \'base64\'")
+            pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id',
+            [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File], (error, result) => {
               if (error) {
                 throw error
               }
