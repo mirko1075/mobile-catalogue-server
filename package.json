@@ -19,9 +19,13 @@
   },
   "homepage": "https://github.com/mirko1075/mobile-catalogue-server#readme",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset": "^1.1.7",
+    "babel-preset-env": "^1.7.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "jest": "^27.4.5",
     "morgan": "^1.10.0",
     "pg": "^8.7.1",
     "postgres-bytea": "^3.0.0"
