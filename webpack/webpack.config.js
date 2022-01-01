@@ -1,45 +1,43 @@
-import path from 'path';
-const source = path.resolve(__dirname, 'src');
-
-export default {
-  context: __dirname,
-  entry: './src/main.js',
+module.exports = {
+  entry: [
+    './src/app.js',
+  ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
-  },
-  resolve: {
-    alias: {
-      components: path.resolve(__dirname, 'src/components'),
-    },
-    extensions: ['.js', '.jsx'],
+    path: '/',
+    filename: 'main-bundle.js',
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        include: source,
-        use: {
-          loader: 'babel-loader',
-          query: {
-            cacheDirectory: true,
-          },
-        },
+        test: /\.js?$/,
+        exclude: /node_modules/,
+        use: {loader: 'babel-loader'}
+      },
+      { test: /\.css$/, use: {loader: 'style-loader!css-loader' }},
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: {loader: 'file-loader' }},
+      {
+        test: /\.(woff|woff2)$/,
+        use: {loader: 'url-loader',
+        options: {
+          prefix: 'font/',
+          limit: '5000',
+        }}
       },
       {
-        test: /\.css$/,
-        include: source,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            query: {
-              importLoader: 1,
-              localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
-              modules: true,
-            },
-          },
-        ],
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        use: {loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'application/octet-stream',
+        }}
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        use: {loader: 'url-loader',
+        options: {
+          limit: '10000',
+          mimetype: 'image/svg+xml',
+        }}
       },
     ],
   },
