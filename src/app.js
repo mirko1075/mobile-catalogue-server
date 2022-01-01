@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express()
 require("dotenv").config();
 const port = process.env.PORT 
-
+console.log('port :>> ', port);
 // MIDDLEWARE
 app.use(logger("dev"));
 app.use(bodyParser.json());
