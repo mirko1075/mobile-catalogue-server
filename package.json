@@ -27,7 +27,7 @@
     "express": "^4.17.2",
     "jest": "^27.4.5",
     "morgan": "^1.10.0",
-    "pg": "7",
+    "pg": "^8.7.1",
     "postgres-bytea": "^3.0.0"
   },
   "devDependencies": {
