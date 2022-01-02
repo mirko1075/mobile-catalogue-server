@@ -7,7 +7,7 @@
     "start": "node ./src/app.js",
     "start-dev": "nodemon node ./src/app.js",
     "test": "jest",
-    "build": "webpack --mode production --config ./webpack/webpack.config.js"
+    "build": "webpack --mode production --config ./webpack/webpack.config.js --env.NODE_ENV=production"
   },
   "repository": {
     "type": "git",
