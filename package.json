@@ -2,11 +2,11 @@
   "name": "mobile-catalogue-server",
   "version": "1.0.0",
   "description": "Rest API - Postgres DB - Phone catalogue",
-  "main": "index.js",
+  "main": "./src/app.js",
   "scripts": {
-    "start": "node index.js",
-    "start-dev": "nodemon node index.js",
-    "test": "mocha"
+    "start": "node ./src/app.js",
+    "start-dev": "nodemon node ./src/app.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -31,8 +31,13 @@
     "postgres-bytea": "^3.0.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.3",
+    "babel-preset-es2015": "^6.24.1",
     "chai": "^4.3.4",
     "mocha": "^9.1.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
   }
 }
