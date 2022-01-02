@@ -16,6 +16,7 @@ const getPhones = async (request, response) => {
         if (error) {
           response.send(error)
         }
+        console.log(result)
         response.status(200).json(result.rows)
       })    
     } catch (error) {
