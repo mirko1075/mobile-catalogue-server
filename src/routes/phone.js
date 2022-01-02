@@ -22,7 +22,7 @@ const getPhones = async (request, response) => {
         if (error) {
           response.send({message:"Error in DB", status: "error", error})
         }
-        if (result.rowCount===0){
+        if (result?.rowCount===0){
           response.status(404).send({message:"No phone with this id", status: "error", error})
         }else{
           response.status(200).json(result.rows)          
@@ -41,7 +41,7 @@ const getPhones = async (request, response) => {
         if (error) {
           response.send({message:"Error in DB", status: "error", error})
         }
-        if (result.rowCount===0){
+        if (result?.rowCount===0){
           response.status(404).send({message:"No phone with this id", status: "error", error})
         }else{
           response.status(200).json(result.rows)          
@@ -90,7 +90,7 @@ const getPhones = async (request, response) => {
             if (error) {
               throw error
             }
-            if (result.rowCount===0){
+            if (result?.rowCount===0){
               response.status(400).send({message: "No phone with id" +id, status : "error"});
             } else {
               response.status(200).send({message: "Phone successfully modified", status: "success", id, ...phone });
@@ -114,7 +114,7 @@ const getPhones = async (request, response) => {
           console.log('error :>> ', error);
           throw error
         }
-        if (result.rowCount===0) {
+        if (result?.rowCount===0) {
          response.status(400).send({message: `Phone with ID: ${id} not found`, status: "error",})
         }else{
           response.status(200).send({message: `Phone deleted with ID: ${id}`, status: "success",})
