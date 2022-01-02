@@ -7,16 +7,16 @@ const sslObj = isProduction?  {
   rejectUnauthorized: false
 }
 : false;
-const connectionPool = new ConnectionPool(sslObj )
-console.log('connectionPool :>> ', connectionPool);
-connectionPool.pool.on('error', function(error) {
+const connectionPool = new ConnectionPool(PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV, sslObj )
+const pool = isProduction? connectionPool.prodPool : connectionPool.devPool
+pool.on('error', function(error) {
   console.log('error :>> ', error);
   return;
 });
 
 const getPhones = async (request, response) => {
     try {
-      await connectionPool.pool.query('SELECT * FROM phones ORDER BY id ASC', (error, result) => {
+      await pool.query('SELECT * FROM phones ORDER BY id ASC', (error, result) => {
         console.log('result :>> ', result);
         console.log('error :>> ', error);
         if (error) {
@@ -37,7 +37,7 @@ const getPhones = async (request, response) => {
   const getPhone = async (request, response) => {
     const id = parseInt(request.params.id)
     try {
-      await connectionPool.pool.query('SELECT * FROM phones WHERE id = $1', [id], (error, result) => {
+      await pool.query('SELECT * FROM phones WHERE id = $1', [id], (error, result) => {
         if (error) {
           response.send({message:"Error in DB", status: "error", error})
         }
@@ -59,7 +59,7 @@ const getPhones = async (request, response) => {
     if (!price) price=0;
     if (phone_name) {
         try {
-          await connectionPool.pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id',
+          await pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id',
           [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File], (error, result) => {
             if (error) {
               console.log('error :>> ', error);
@@ -83,7 +83,7 @@ const getPhones = async (request, response) => {
     const phone = {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file:B64File}
     if (phone_name) {
       try {
-        await connectionPool.pool.query(
+        await pool.query(
           'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9, file=$10 WHERE id = $11',
           [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File, id],
           (error, result) => {
@@ -109,7 +109,7 @@ const getPhones = async (request, response) => {
   const deletePhone = async (request, response) => {
     const id = parseInt(request.params.id)
     try {
-      connectionPool.pool.query('DELETE FROM phones WHERE id = $1', [id], (error, result) => {
+      pool.query('DELETE FROM phones WHERE id = $1', [id], (error, result) => {
         if (error) {
           console.log('error :>> ', error);
           throw error
