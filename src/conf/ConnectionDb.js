@@ -9,14 +9,15 @@ class ConnectionPool {
     this.ssl=ssl
   }
   pool = new Pool({
-    user: process.env.PG_USER,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    port: process.env.PG_PORT,
-    host: process.env.PG_HOST,
+    user: this.user,
+    database: this.database,
+    password: this.password,
+    port: this.port,
+    host: this.host,
     ssl: this.ssl
       ?   {
-        rejectUnauthorized:false
+        require: false, 
+        rejectUnauthorized: false
       }
       : false
   });
