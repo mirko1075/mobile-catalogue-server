@@ -1,10 +1,31 @@
-module.exports = {
+const webpack = require("webpack")
+
+const webpackConfig = {
   entry: [
     './src/app.js',
   ],
   output: {
-    path: '/',
     filename: 'main-bundle.js',
+  },
+  "target": "node",
+  plugins: [
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })
+  ],
+  resolve:{
+    fallback: { 
+      "path": false,
+      "buffer": false ,
+      "zlib": false ,
+      "querystring": false,
+      "crypto": false ,
+      "stream": false ,
+      "os": false ,
+      "http": false ,
+      "url": false ,
+      "assert": false ,
+      "util": false ,
+      "stream":false
+    }
   },
   module: {
     rules: [
@@ -41,4 +62,10 @@ module.exports = {
       },
     ],
   },
+}
+
+console.log(`webpackConfig`, webpackConfig)
+
+module.exports = {
+  ...webpackConfig
 };
