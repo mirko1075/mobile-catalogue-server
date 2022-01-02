@@ -30,7 +30,7 @@ const getPhones = (request, response) => {
     }
   }
 
-  const getPhoneById = (request, response) => {
+  const getPhone = (request, response) => {
     const id = parseInt(request.params.id)
     try {
       pool.query('SELECT * FROM phones WHERE id = $1', [id], (error, results) => {
@@ -44,11 +44,8 @@ const getPhones = (request, response) => {
     }
   }
 
-  const createPhone = async (request, response) => {
+  const postPhone = async (request, response) => {
     let {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
-    console.log('request.body :>> ', request.body);
-    console.log('phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram :>> ', phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram);
-    console.log('B64File :>> ', B64File);
     if (!ram) ram=0;
     if (!price) price=0;
     if (phone_name) {
@@ -66,6 +63,7 @@ const getPhones = (request, response) => {
             pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
             [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram], (error, result) => {
               if (error) {
+                console.log('error :>> ', error);
                 throw error
               }
               response.status(201).send(`Phone added added with ID: ${result.rows[0].id}`);
@@ -91,8 +89,8 @@ const getPhones = (request, response) => {
           'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9 WHERE id = $10',
           [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram, id],
           (error, results) => {
-            console.log('results :>> ', results);
             if (error) {
+              console.log('error :>> ', error);
               throw error
             }
             response.status(200).send(`User modified with ID: ${id}`)
@@ -123,8 +121,8 @@ const getPhones = (request, response) => {
 
   module.exports = {
     getPhones,
-    getPhoneById,
-    createPhone,
+    getPhone,
+    postPhone,
     updatePhone,
     deletePhone,
   }

@@ -1,16 +1,23 @@
-const express = require('express')
-const bodyParser = require('body-parser')
+let express = require('express');
+let app = express();
 const path = require("path");
-const logger = require("morgan");
-const cors = require("cors");
-const app = express()
+let morgan = require('morgan');
+let bodyParser = require('body-parser');
 require("dotenv").config();
 const port = process.env.PORT 
-console.log('port :>> ', port);
+let phone = require('./routes/phone');
+
+//don't show the log when it is test
+if(process.env.NODE_ENV !== 'test') {
+    //use morgan to log at command line
+    app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
+}
+
 // MIDDLEWARE
-app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: 'application/json'}));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(function(req, res, next) {
@@ -20,31 +27,19 @@ app.use(function(req, res, next) {
   next();
 });
 
-//Import DB Connection and functions
-const db = require('./db/db_queries.js')
+app.get("/", (req, res) => res.json({message: "Welcome to our Mobilestore!"}));
 
-// Catch `next(err)` calls
-app.use((err, req, res, next) => {
-  // always log the error
-  console.error("ERROR", req.method, req.path, err);
-
-  // only render if the error ocurred before sending the response
-  if (!res.headersSent) {
-    const statusError = err.status || "500";
-    res.status(statusError).json(err);
-  }
-});
-
-
-app.get('/api/phones', db.getPhones)
-app.get('/api/phones/:id', db.getPhoneById)
-app.post('/api/phones', db.createPhone)
-app.put('/api/phones/:id', db.updatePhone)
-app.delete('/api/phones/:id', db.deletePhone)
+app.route("/api/v1/phones")
+    .get(phone.getPhones)
+    .post(phone.postPhone);
+app.route("/api/v1/phones/:id")
+    .get(phone.getPhone)
+    .delete(phone.deletePhone)
+    .put(phone.updatePhone);
 
 app.use((req, res, next) => {
   // If no previous routes match the request, send back the React app.
-  res.sendFile(__dirname + "/public/index.html");
+  res.status(404).send({message: `Error: No route defined `, status: "error"})
 });
 
 // ERROR HANDLING
@@ -54,8 +49,8 @@ app.use((req, res, next) => {
   res.status(404).json({ code: "not found" }); // .send( JSON.stringify(  { code: 'not found' }  ) )
 });
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}.`)
-})
 
-module.exports = app;
+app.listen(port);
+console.log("Listening on port " + port);
+
+module.exports = app; // for testing
