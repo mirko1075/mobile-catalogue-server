@@ -1,10 +1,14 @@
 const {ConnectionPool} = require("../conf/ConnectionDb");
 const {PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV} = process.env;
+console.log('PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV :>> ', PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV);
 const isProduction = NODE_ENV === "production";
-const sslObj = isProduction? true
-: null;
-const connectionPool = new ConnectionPool(PG_USER,PG_DATABASE,PG_PASSWORD,PG_PORT,PG_HOST, sslObj )
-
+const sslObj = isProduction?  {
+  require: false, 
+  rejectUnauthorized: false
+}
+: false;
+const connectionPool = new ConnectionPool(sslObj )
+console.log('connectionPool :>> ', connectionPool);
 connectionPool.pool.on('error', function(error) {
   console.log('error :>> ', error);
   return;
@@ -13,14 +17,20 @@ connectionPool.pool.on('error', function(error) {
 const getPhones = async (request, response) => {
     try {
       await connectionPool.pool.query('SELECT * FROM phones ORDER BY id ASC', (error, result) => {
+        console.log('result :>> ', result);
+        console.log('error :>> ', error);
         if (error) {
-          response.send(error)
+          response.send({message:"Error in DB", status: "error", error})
         }
-        console.log(result)
-        response.status(200).json(result.rows)
+        if (result.rowCount===0){
+          response.status(404).send({message:"No phone with this id", status: "error", error})
+        }else{
+          response.status(200).json(result.rows)          
+        }
       })    
     } catch (error) {
-      response.status(404).send({message:"Phones not found server error", status: "error", error})
+      console.log(`error`, error)
+      //response.status(404).send({message:"Phones not found server error", status: "error", error})
     }
   }
 

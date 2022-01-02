@@ -1,25 +1,15 @@
 const Pool = require('pg').Pool
 class ConnectionPool { 
-  constructor(user, database, password, port, host, ssl) { 
-    this.user = user;
-    this.database=database;
-    this.password=password;
-    this.port=port;
-    this.host=host;
+  constructor(ssl) { 
     this.ssl=ssl
   }
   pool = new Pool({
-    user: this.user,
-    database: this.database,
-    password: this.password,
-    port: this.port,
-    host: this.host,
+    user: process.env.PG_USER,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD,
+    port: process.env.PG_PORT,
+    host: process.env.PG_HOST,
     ssl: this.ssl
-      ?   {
-        require: false, 
-        rejectUnauthorized: false
-      }
-      : false
   });
 }
 
