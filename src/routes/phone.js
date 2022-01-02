@@ -1,4 +1,4 @@
-const {ConnectionPool} = require("../model/ConnectionModel");
+const {ConnectionPool} = require("../conf/ConnectionDb");
 const {PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV} = process.env;
 const isProduction = NODE_ENV === "production";
 const sslObj = isProduction? true
