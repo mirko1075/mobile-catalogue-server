@@ -4,7 +4,8 @@
   "description": "Rest API - Postgres DB - Phone catalogue",
   "main": "./src/app.js",
   "engines": {
-    "node": "16.5"
+    "node": "16.5",
+    "npm":"8.1"
   },
   "scripts": {
     "start": "node ./src/app.js",
