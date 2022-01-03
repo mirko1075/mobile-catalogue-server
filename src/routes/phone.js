@@ -106,21 +106,41 @@ const getPhones = async (request, response) => {
 
   const updatePhone = (request, response) => {
     const id = parseInt(request.params.id)
-    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram } = request.body
-    console.log('image_file_name :>> ', image_file_name);
+    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File  } = request.body
+    console.log(`B64File`, B64File)
     if (phone_name) {
       try {
-        pool.query(
-          'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9 WHERE id = $10',
-          [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram, id],
-          (error, results) => {
-            console.log('results :>> ', results);
-            if (error) {
-              throw error
+        if (B64File){
+          console.log("With file")
+          pool.query(
+            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9, file=$10 WHERE id = $11',
+            [phone_name,manufacturer,description,color,Number(price),image_file_name,screen,processor,Number(ram),B64File, id],
+            (error, results) => {
+              console.log('error :>> ', error);
+              console.log('results :>> ', results);
+              if (error) {
+                throw error
+              }
+              response.status(200).send(`User modified with ID: ${id}`)
             }
-            response.status(200).send(`User modified with ID: ${id}`)
-          }
-        )
+          )
+        }else{
+          console.log("Without file")
+
+          pool.query(
+            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9 WHERE id = $10',
+            [phone_name,manufacturer,description,color,Number(price),image_file_name,screen,processor,Number(ram), id],
+            (error, results) => {
+              console.log('error :>> ', error);
+              console.log('results :>> ', results);
+              if (error) {
+                throw error
+              }
+              response.status(200).send(`User modified with ID: ${id}`)
+            }
+          )
+        }
+       
       } catch (error) {
         response.send(error)
       }
