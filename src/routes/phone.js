@@ -51,19 +51,20 @@ const getPhones = async (request, response) => {
   }
 
   const postPhone = async (request, response) => {
-    let {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
-    const phone = {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file:B64File}
+    let {phone_name,manufacturer,description,color,price,screen,processor,ram,B64File } = request.body
+    const phone = {phone_name,manufacturer,description,color,price,screen,processor,ram,file:B64File}
     if (!ram) ram=0;
     if (!price) price=0;
     if (phone_name) {
         try {
-          await pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id',
-          [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File], (error, result) => {
+          await pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
+          [phone_name,manufacturer,description,color,price,screen,processor,ram,B64File], (error, result) => {
             if (error) {
               console.log('error :>> ', error);
-              throw error
+              response.status(404).send({message: "Error in the DB", status: "error", error });
+            }else{
+              response.status(201).send({message: "Phone successfully added!",id: result.rows[0].id, ...phone });
             }
-            response.status(201).send({message: "Phone successfully added!",id: result.rows[0].id, ...phone });
           })  
         } catch (error) {
           console.log('error :>> ', error);
@@ -77,13 +78,13 @@ const getPhones = async (request, response) => {
 
 /*   const updatePhone = async (request, response) => {
     const id = parseInt(request.params.id)
-    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
-    const phone = {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file:B64File}
+    const {phone_name,manufacturer,description,color,price,screen,processor,ram,B64File } = request.body
+    const phone = {phone_name,manufacturer,description,color,price,screen,processor,ram,file:B64File}
     if (phone_name) {
       try {
         await pool.query(
-          'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9, file=$10 WHERE id = $11',
-          [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File, id],
+          'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5,=$6, screen=$7, processor=$8, ram=$9, file=$10 WHERE id = $11',
+          [phone_name,manufacturer,description,color,price,screen,processor,ram,B64File, id],
           (error, result) => {
             if (error) {
               throw error
@@ -106,15 +107,15 @@ const getPhones = async (request, response) => {
 
   const updatePhone = (request, response) => {
     const id = parseInt(request.params.id)
-    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File  } = request.body
+    const {phone_name,manufacturer,description,color,price,screen,processor,ram,B64File  } = request.body
     console.log(`B64File`, B64File)
     if (phone_name) {
       try {
         if (B64File){
           console.log("With file")
           pool.query(
-            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9, file=$10 WHERE id = $11',
-            [phone_name,manufacturer,description,color,Number(price),image_file_name,screen,processor,Number(ram),B64File, id],
+            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8, file=$9 WHERE id = $10',
+            [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram),B64File, id],
             (error, results) => {
               console.log('error :>> ', error);
               console.log('results :>> ', results);
@@ -128,8 +129,8 @@ const getPhones = async (request, response) => {
           console.log("Without file")
 
           pool.query(
-            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9 WHERE id = $10',
-            [phone_name,manufacturer,description,color,Number(price),image_file_name,screen,processor,Number(ram), id],
+            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8 WHERE id = $9',
+            [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram), id],
             (error, results) => {
               console.log('error :>> ', error);
               console.log('results :>> ', results);
