@@ -5,9 +5,9 @@ const expect = chai.expect;
 const should = require("should");
 const chaiHttp = require('chai-http');
 const server = require('../app');
-const ConnectionPool = require('../model/ConnectionModel');
+const ConnectionPool = require('../conf/ConnectionDb');
 const { doesNotThrow } = require('should');
-
+jest.setTimeout(7000)
 chai.use(chaiHttp);
 let tempId= 0;
 describe("Test phone API", ()=>{    
@@ -70,11 +70,11 @@ describe("Test phone API", ()=>{
         })
     })
     describe("Delete phone just added", () =>{
-        it("should delete  phone just added and return status 200 and phone added", async (done)=>{
+        it("should delete  phone just added and return status 200 and phone added", async ()=>{
             const res = await chai.request(server)
             .delete('/api/v1/phones/'+tempId)
-            done()
             expect(res).to.have.status(200);
+            done();
         })
     })
 })

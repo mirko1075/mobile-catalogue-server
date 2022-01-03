@@ -17,15 +17,13 @@ pool.on('error', function(error) {
 const getPhones = async (request, response) => {
     try {
       await pool.query('SELECT * FROM phones ORDER BY id ASC', (error, result) => {
-        console.log('result :>> ', result);
-        console.log('error :>> ', error);
         if (error) {
           response.send({message:"Error in DB", status: "error", error})
         }
-        if (result?.rowCount===0){
-          response.status(404).send({message:"No phone with this id", status: "error", error})
+        if (result?.rows?.length){
+          response.status(200).json(result.rows)    
         }else{
-          response.status(200).json(result.rows)          
+           response.status(404).send({message:"No phone with this id", status: "error", error})     
         }
       })    
     } catch (error) {
@@ -41,10 +39,10 @@ const getPhones = async (request, response) => {
         if (error) {
           response.send({message:"Error in DB", status: "error", error})
         }
-        if (result?.rowCount===0){
-          response.status(404).send({message:"No phone with this id", status: "error", error})
+        if (result?.rows?.length){
+          response.status(200).json(result.rows)  
         }else{
-          response.status(200).json(result.rows)          
+           response.status(404).send({message:"No phone with this id", status: "error", error})  
         }
       })      
     } catch (error) {
@@ -77,7 +75,7 @@ const getPhones = async (request, response) => {
 
   }
 
-  const updatePhone = async (request, response) => {
+/*   const updatePhone = async (request, response) => {
     const id = parseInt(request.params.id)
     const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File } = request.body
     const phone = {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file:B64File}
@@ -103,6 +101,31 @@ const getPhones = async (request, response) => {
       }
     }else{
       response.status(404).send({message: "Phone name is mandatory field", status: "error"})
+    }
+  } */
+
+  const updatePhone = (request, response) => {
+    const id = parseInt(request.params.id)
+    const {phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram } = request.body
+    console.log('image_file_name :>> ', image_file_name);
+    if (phone_name) {
+      try {
+        pool.query(
+          'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, image_file_name=$6, screen=$7, processor=$8, ram=$9 WHERE id = $10',
+          [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram, id],
+          (error, results) => {
+            console.log('results :>> ', results);
+            if (error) {
+              throw error
+            }
+            response.status(200).send(`User modified with ID: ${id}`)
+          }
+        )
+      } catch (error) {
+        response.send(error)
+      }
+    }else{
+      response.status(404).send("Phone name is mandatory field")
     }
   }
 

@@ -3,6 +3,7 @@ let app = express();
 const path = require("path");
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
+const cors = require('cors');
 require("dotenv").config();
 const port = process.env.PORT 
 let phone = require('./routes/phone');
@@ -13,19 +14,22 @@ if(process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
 
+app.use(cors());
+
 // MIDDLEWARE
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json'}));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
 
 app.get("/", (req, res) => res.json({message: "Welcome to our Mobilestore!"}));
 
