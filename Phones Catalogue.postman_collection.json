@@ -11,7 +11,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/phones/15",
+					"raw": "http://localhost:3000/api/v1/phones/25",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -19,8 +19,9 @@
 					"port": "3000",
 					"path": [
 						"api",
+						"v1",
 						"phones",
-						"15"
+						"25"
 					]
 				}
 			},
@@ -33,7 +34,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone_name\": \"Galaxy S10 Pro Modified\",\r\n    \"manufacturer\": \"Samsung\",\r\n    \"description\": \"Competitor of Iphone 12\",\r\n    \"color\": \"gold\",\r\n    \"price\": 1010,\r\n    \"image_file_name\": \"image.jpg\",\r\n    \"screen\": \"180X24\",\r\n    \"processor\": \"Procesor XMD\",\r\n    \"ram\": 450\r\n}",
+					"raw": "{\r\n    \"phone_name\": \"Galaxy S10 Pro Modified\",\r\n    \"manufacturer\": \"Samsung\",\r\n    \"description\": \"Competitor of Iphone 12\",\r\n    \"color\": \"gold\",\r\n    \"price\": 1010,\r\n    \"screen\": \"180X24\",\r\n    \"processor\": \"Procesor XMD\",\r\n    \"ram\": 450,\r\n    \"file\": null\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +42,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/phones/16",
+					"raw": "http://localhost:3000/api/v1/phones/22",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -49,8 +50,9 @@
 					"port": "3000",
 					"path": [
 						"api",
+						"v1",
 						"phones",
-						"16"
+						"22"
 					]
 				}
 			},
@@ -63,7 +65,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone_name\": \"Galaxy S10\",\r\n    \"manufacturer\": \"Samsung\",\r\n    \"description\": \"Competitor of Iphone 12\",\r\n    \"color\": \"white\",\r\n    \"price\": 1010,\r\n    \"image_file_name\": \"image.jpg\",\r\n    \"screen\": \"180X24\",\r\n    \"processor\": \"Procesor XMD\",\r\n    \"ram\": 450\r\n}",
+					"raw": "{\r\n    \"phone_name\": \"Galaxy S10\",\r\n    \"manufacturer\": \"Samsung\",\r\n    \"description\": \"Competitor of Iphone 12\",\r\n    \"color\": \"white\",\r\n    \"price\": 1010,\r\n    \"screen\": \"180X24\",\r\n    \"processor\": \"Procesor XMD\",\r\n    \"ram\": 450,\r\n    \"file\":null\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -71,7 +73,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/phones",
+					"raw": "http://localhost:3000/api/v1/phones",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -79,6 +81,7 @@
 					"port": "3000",
 					"path": [
 						"api",
+						"v1",
 						"phones"
 					]
 				}
@@ -111,7 +114,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/phones/1",
+					"raw": "http://localhost:3000/api/v1/phones/22",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -119,8 +122,9 @@
 					"port": "3000",
 					"path": [
 						"api",
+						"v1",
 						"phones",
-						"1"
+						"22"
 					]
 				}
 			},
