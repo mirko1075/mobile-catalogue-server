@@ -1,12 +1,7 @@
 const {ConnectionPool} = require("../conf/ConnectionDb");
 const {PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV} = process.env;
-console.log('PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV :>> ', PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV);
 const isProduction = NODE_ENV === "production";
-const sslObj = isProduction?  {
-  require: false, 
-  rejectUnauthorized: false
-}
-: false;
+const sslObj = isProduction === true;
 const connectionPool = new ConnectionPool(PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT, PG_HOST, NODE_ENV, sslObj )
 const pool = isProduction? connectionPool.prodPool : connectionPool.devPool
 pool.on('error', function(error) {
@@ -28,7 +23,6 @@ const getPhones = async (request, response) => {
       })    
     } catch (error) {
       console.log(`error`, error)
-      //response.status(404).send({message:"Phones not found server error", status: "error", error})
     }
   }
 
@@ -76,35 +70,6 @@ const getPhones = async (request, response) => {
 
   }
 
-/*   const updatePhone = async (request, response) => {
-    const id = parseInt(request.params.id)
-    const {phone_name,manufacturer,description,color,price,screen,processor,ram,B64File } = request.body
-    const phone = {phone_name,manufacturer,description,color,price,screen,processor,ram,file:B64File}
-    if (phone_name) {
-      try {
-        await pool.query(
-          'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5,=$6, screen=$7, processor=$8, ram=$9, file=$10 WHERE id = $11',
-          [phone_name,manufacturer,description,color,price,screen,processor,ram,B64File, id],
-          (error, result) => {
-            if (error) {
-              throw error
-            }
-            if (result?.rowCount===0){
-              response.status(400).send({message: "No phone with id" +id, status : "error"});
-            } else {
-              response.status(200).send({message: "Phone successfully modified", status: "success", id, ...phone });
-            }
-            
-          }
-        )
-      } catch (error) {
-        response.send(error)
-      }
-    }else{
-      response.status(404).send({message: "Phone name is mandatory field", status: "error"})
-    }
-  } */
-
   const updatePhone = (request, response) => {
     const id = parseInt(request.params.id)
     const {phone_name,manufacturer,description,color,price,screen,processor,ram,B64File  } = request.body
@@ -127,7 +92,6 @@ const getPhones = async (request, response) => {
           )
         }else{
           console.log("Without file")
-
           pool.query(
             'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8 WHERE id = $9',
             [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram), id],
