@@ -54,14 +54,12 @@ const getPhones = async (request, response) => {
           await pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
           [phone_name,manufacturer,description,color,price,screen,processor,ram,B64File], (error, result) => {
             if (error) {
-              console.log('error :>> ', error);
               response.status(404).send({message: "Error in the DB", status: "error", error });
             }else{
               response.status(201).send({message: "Phone successfully added!",id: result.rows[0].id, ...phone });
             }
           })  
         } catch (error) {
-          console.log('error :>> ', error);
           response.status(404).send({message:"Phone not added server error", status: "error", error})
         }
     }else{
@@ -77,13 +75,10 @@ const getPhones = async (request, response) => {
     if (phone_name) {
       try {
         if (B64File){
-          console.log("With file")
           pool.query(
             'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8, file=$9 WHERE id = $10',
             [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram),B64File, id],
             (error, results) => {
-              console.log('error :>> ', error);
-              console.log('results :>> ', results);
               if (error) {
                 throw error
               }
@@ -96,8 +91,6 @@ const getPhones = async (request, response) => {
             'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8 WHERE id = $9',
             [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram), id],
             (error, results) => {
-              console.log('error :>> ', error);
-              console.log('results :>> ', results);
               if (error) {
                 throw error
               }
@@ -121,8 +114,7 @@ const getPhones = async (request, response) => {
         if (error) {
           console.log('error :>> ', error);
           throw error
-        }
-        if (result?.rowCount===0) {
+        }else if (result?.rowCount===0) {
          response.status(400).send({message: `Phone with ID: ${id} not found`, status: "error",})
         }else{
           response.status(200).send({message: `Phone deleted with ID: ${id}`, status: "success",})
@@ -130,7 +122,6 @@ const getPhones = async (request, response) => {
         
       })
     } catch (error) {
-      console.log('error :>> ', error);
       response.status(404).send({message: `Phone with ID: ${id} not deleted`, status: "error", error})
     }
 
