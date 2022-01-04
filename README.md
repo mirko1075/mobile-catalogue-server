@@ -8,6 +8,8 @@
 
  **Description**: Rest API - Postgres DB - Phone catalogue
 
+ **Deploy URL**: https://mobile-catalogue.herokuapp.com/api/v1
+
  **Entry point**: "./src/app.js"
 
  **Environment**:
