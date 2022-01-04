@@ -1,4 +1,4 @@
-# Project: Phones Catalogue
+# Project: Phones Catalogue - Server - APIRest
 
 
 
@@ -10,11 +10,24 @@
 
  **Entry point**: "./src/app.js"
 
- **Enviroment**:
+ **Environment**:
 
-  				Node: 16.5
-  	
-  				 Npm: 8.1
+​		 Node: 16.5
+ 		Npm: 8.1
+
+
+
+Environment variables:
+
+PORT : Listening port for API
+DATABASE_URL = Database Postgres URI
+jwtSecret = Secret for Heroku security
+PG_USER = User with granted access to Database
+PG_PASSWORD = PG_USER's password
+PG_HOST = Database horsname or IP
+PG_PORT = Postgres port (5432 default)
+PG_DATABASE = mobile-catalogue
+NODE_ENV = development (Set by heroku as prod)
 
 ### Installation:
 
