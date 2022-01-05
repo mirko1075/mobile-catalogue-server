@@ -10,6 +10,8 @@
 
  **Deploy URL**: https://mobile-catalogue.herokuapp.com/api/v1
 
+**Docker image URL**: https://hub.docker.com/repository/docker/mirko1075/mobile-catalogue-server
+
  **Entry point**: "./src/app.js"
 
  **Environment**:
@@ -21,7 +23,7 @@
 
 Environment variables:
 
-PORT : Listening port for API
+PORT : 3000
 DATABASE_URL = Database Postgres URI
 jwtSecret = Secret for Heroku security
 PG_USER = User with granted access to Database
@@ -52,6 +54,12 @@ $npm run start
 
 ```
 $npm run test
+```
+
+#### Run Docker image
+
+```
+$docker run --rm -p 3000:3000 mirko1075/mobile-catalogue-server
 ```
 
 
