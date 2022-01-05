@@ -37,12 +37,5 @@ app.use((req, res, next) => {
   res.status(404).send({message: `Error: No route defined `, status: "error"})
 });
 
-// ERROR HANDLING
-//  Catch 404 and respond with error message
-// Shows a 404 error with a message when no route is found for the request
-app.use((req, res, next) => {
-  res.status(404).json({ code: "not found" }); // .send( JSON.stringify(  { code: 'not found' }  ) )
-});
-
 
 module.exports = app; 
