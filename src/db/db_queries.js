@@ -51,6 +51,7 @@ const getPhones = (request, response) => {
     if (phone_name) {
         try {
           if (B64File){
+            console.log("base64 \'base64\'")
             pool.query('INSERT INTO phones (phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id',
             [phone_name,manufacturer,description,color,price,image_file_name,screen,processor,ram,B64File], (error, result) => {
               if (error) {
