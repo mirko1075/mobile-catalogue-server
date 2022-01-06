@@ -12,6 +12,8 @@
 
 **Docker image URL**: https://hub.docker.com/repository/docker/mirko1075/mobile-catalogue-server
 
+​	Docker Image points to Heroku DB Server
+
  **Entry point**: "./src/bin/www"
 
  **Environment**:
@@ -28,7 +30,7 @@ DATABASE_URL = Database Postgres URI
 jwtSecret = Secret for Heroku security
 PG_USER = User with granted access to Database
 PG_PASSWORD = PG_USER's password
-PG_HOST = Database horsname or IP
+PG_HOST = Database horstame or IP
 PG_PORT = Postgres port (5432 default)
 PG_DATABASE = mobile-catalogue
 NODE_ENV = development (Set by heroku as prod)
@@ -111,7 +113,7 @@ Columns:
 
 CREATE TABLE IF NOT EXISTS public.phones
 (
-    id integer NOT NULL DEFAULT nextval('phones_id_seq'::regclass),
+    id SERIAL integer  - NOT NULL DEFAULT nextval('phones_id_seq'::regclass),
     phone_name character varying(500) COLLATE pg_catalog."default" NOT NULL,
     manufacturer character varying(500) COLLATE pg_catalog."default",
     description character varying(2000) COLLATE pg_catalog."default",
