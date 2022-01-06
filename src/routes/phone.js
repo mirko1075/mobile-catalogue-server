@@ -13,13 +13,15 @@ const getPhones = async (request, response) => {
     try {
       await pool.query('SELECT * FROM phones ORDER BY id ASC', (error, result) => {
         if (error) {
-          response.send({message:"Error in DB", status: "error", error})
+          response.send({message:"Error in DB", status: "error", error});
+          return;
         }
-        if (result?.rows?.length){
-          response.status(200).json(result.rows)    
-        }else{
-           response.status(404).send({message:"No phone with this id", status: "error", error})     
+        if (!result?.rows?.length){
+          response.status(404).send({message:"No phones", status: "error", error})     
+          return;
         }
+        response.status(200).json(result.rows);    
+        
       })    
     } catch (error) {
       console.log(`error`, error)
@@ -31,13 +33,14 @@ const getPhones = async (request, response) => {
     try {
       await pool.query('SELECT * FROM phones WHERE id = $1', [id], (error, result) => {
         if (error) {
-          response.send({message:"Error in DB", status: "error", error})
+          response.send({message:"Error in DB", status: "error", error});
+          return;
         }
-        if (result?.rows?.length){
-          response.status(200).json(result.rows)  
-        }else{
-           response.status(404).send({message:"No phone with this id", status: "error", error})  
+        if (!result?.rows?.length){
+          response.status(404).send({message:"No phone with this id", status: "error", error});
+          return;
         }
+          response.status(200).json(result.rows);
       })      
     } catch (error) {
       response.status(404).send({message:"Phone not found server error",id, status: "error", error})
@@ -56,12 +59,11 @@ const getPhones = async (request, response) => {
             if (error) {
               console.log('error :>> ', error);
               response.status(404).send({message: "Error in the DB", status: "error", error });
-            }else{
-              response.status(201).send({message: "Phone successfully added!",id: result.rows[0].id, ...phone });
+              return;
             }
+              response.status(201).send({message: "Phone successfully added!",id: result.rows[0].id, ...phone });
           })  
         } catch (error) {
-          console.log('error :>> ', error);
           response.status(404).send({message:"Phone not added server error", status: "error", error})
         }
     }else{
@@ -70,70 +72,70 @@ const getPhones = async (request, response) => {
 
   }
 
-  const updatePhone = (request, response) => {
+  const updatePhone = async (request, response) => {
     const id = parseInt(request.params.id)
     const {phone_name,manufacturer,description,color,price,screen,processor,ram,B64File  } = request.body
-    console.log(`B64File`, B64File)
     if (phone_name) {
       try {
         if (B64File){
-          console.log("With file")
-          pool.query(
-            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8, file=$9 WHERE id = $10',
+          await pool.query(
+            'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8, file=$9 WHERE id = $10 RETURNING id',
             [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram),B64File, id],
             (error, results) => {
-              console.log('error :>> ', error);
-              console.log('results :>> ', results);
               if (error) {
-                throw error
+                response.status(404).send({message: "Error in the DB", status: "error", error });
+                return;
+              }
+              if (!results.rowCount) {
+                response.status(404).send({message: "Phone ID not present", status: "error"});
+                return;
               }
               response.status(200).send(`Phone modified with ID: ${id}`)
             }
           )
         }else{
-          console.log("Without file")
-          pool.query(
+          await pool.query(
             'UPDATE phones SET phone_name = $1, manufacturer=$2, description=$3, color=$4,  price=$5, screen=$6, processor=$7, ram=$8 WHERE id = $9',
             [phone_name,manufacturer,description,color,Number(price),screen,processor,Number(ram), id],
             (error, results) => {
-              console.log('error :>> ', error);
-              console.log('results :>> ', results);
               if (error) {
-                throw error
+                response.status(404).send({message: "Error in the DB", status: "error", error });
+                return;
               }
-              response.status(200).send(`User modified with ID: ${id}`)
+              if (!results.rowCount) {
+                response.status(404).send({message: "Phone ID not present", status: "error"});
+                return;
+              }
+              response.status(200).send(`Phone modified with ID: ${id}`)
             }
           )
         }
        
       } catch (error) {
-        response.send(error)
+        response.status(404).send({message:"Phone not modified server error", status: "error", error})
       }
     }else{
-      response.status(404).send("Phone name is mandatory field")
+      response.status(404).send({message: "Phone name is mandatory field", status: "error"})
     }
   }
 
   const deletePhone = async (request, response) => {
     const id = parseInt(request.params.id)
     try {
-      pool.query('DELETE FROM phones WHERE id = $1', [id], (error, result) => {
+      await pool.query('DELETE FROM phones WHERE id = $1', [id], (error, result) => {
         if (error) {
-          console.log('error :>> ', error);
-          throw error
+          response.status(404).send({message: "Error in the DB", status: "error", error });
+          return;
         }
-        if (result?.rowCount===0) {
+        if (!result?.rowCount) {
          response.status(400).send({message: `Phone with ID: ${id} not found`, status: "error",})
-        }else{
-          response.status(200).send({message: `Phone deleted with ID: ${id}`, status: "success",})
+         return;
         }
-        
+          response.status(200).send({message: `Phone deleted with ID: ${id}`, status: "success",})
       })
     } catch (error) {
-      console.log('error :>> ', error);
       response.status(404).send({message: `Phone with ID: ${id} not deleted`, status: "error", error})
     }
-
   }
 
   module.exports = {

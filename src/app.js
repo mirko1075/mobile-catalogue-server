@@ -9,7 +9,7 @@ const port = process.env.PORT
 let phone = require('./routes/phone');
 
 //don't show the log when it is test
-if(process.env.NODE_ENV !== 'test') {
+if(process.env.NODE_ENV !== 'dev') {
     //use morgan to log at command line
     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
